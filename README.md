@@ -9,7 +9,7 @@ npm install
 ```
 npm run serve
 ```
-
+json-server --watch db.json - команда для загрузки пользователей
 ### Compiles and minifies for production
 ```
 npm run build
