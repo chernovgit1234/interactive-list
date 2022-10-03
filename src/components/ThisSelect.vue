@@ -1,27 +1,34 @@
 <template>
   <div>
-    <select @change="changeSelect($event)" class="select">
-      <option value="all" selected>Все</option>
-      <option value="usa">Гражданство США</option>
-      <option value="old30">Старше 30-ти лет</option>
-      <option value="mans">Мужчины</option>
+    <select @change="changeSelect($event)" class="select" :name="name">
+      <option :value="i" v-for="(i, item) in selectItems" :key="item">{{i}}</option>
     </select>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+
+import { defineComponent, reactive} from "vue";
 import { useStore } from "vuex";
+
 export default defineComponent({
-  setup() {
+  props: ['selectItems', 'name'],
+  setup(props) {
     const store = useStore();
 
+    const objSelected = reactive({
+      name: '',
+      value: ''
+    })
+
     function changeSelect(event: any) {
-      store.dispatch("changeSelect", event.target.value);
+      objSelected.name = props.name
+      objSelected.value = event.target.value
+      store.dispatch("changeSelect", objSelected);
     }
 
     return {
-      changeSelect,
+      changeSelect
     };
   },
 });

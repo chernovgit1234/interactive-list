@@ -1,19 +1,16 @@
 import { createStore, StoreOptions } from "vuex";
 import { RootState } from '@/store/types';
 import axios from "axios";
+import { filter } from '../store/filter/index';
 
 const store: StoreOptions<RootState> = {
   state:  {
     users: [],
-    selectedValue: "",
     activePreloader: false,
   },
   mutations: {
     SET_USERS(state, users: Array<Object>) {
       state.users = users;
-    },
-    FILTER_USERS(state, value: string) {
-      state.selectedValue = value;
     },
     CHANGE_PRELOADER(state) {
       state.activePreloader = !state.activePreloader;
@@ -31,21 +28,15 @@ const store: StoreOptions<RootState> = {
         console.log("Есть ошибка:", error);
       }
     },
-    changeSelect({ commit }, value: string) {
-      if (value) {
-        setTimeout(() => {
-          commit("CHANGE_PRELOADER");
-        }, 1000);
-        commit("FILTER_USERS", value);
-        commit("CHANGE_PRELOADER");
-      }
-    },
   },
   getters: {
     users: (u) => u.users,
-    selectedValue: (u) => u.selectedValue,
     activePreloader: (u) => u.activePreloader,
   },
+
+  modules: {
+    filter
+  }
 }
 
 export default createStore<RootState>(store);
